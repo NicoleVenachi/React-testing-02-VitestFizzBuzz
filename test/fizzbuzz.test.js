@@ -30,12 +30,13 @@ describe('fizzbuzz', () => {
     expect(() => fizzbuzz(NaN)).toThrow('parameter provided must be a number')
   })
 
-  it('shoud return 1, if number provided 1', () => {
-    expect(fizzbuzz(1)).toBe(1)
-  })
-  it('shoud return 2, if number provided 2', () => {
-    expect(fizzbuzz(2)).toBe(2)
-  })
+  // esto se desactivo posteriormente porque es redudante
+  // it('shoud return 1, if number provided 1', () => {
+  //   expect(fizzbuzz(1)).toBe(1)
+  // })
+  // it('shoud return 2, if number provided 2', () => {
+  //   expect(fizzbuzz(2)).toBe(2)
+  // })
   it('shoud return "fizz", if number provided 3', () => {
     expect(fizzbuzz(3)).toBe('fizz')
   })
@@ -56,5 +57,9 @@ describe('fizzbuzz', () => {
 
   it('shoud return "fizzbuzz", if number provided is multiple of 3 and 5', () => {
     expect(fizzbuzz(15)).toBe('fizzbuzz')
+    expect(fizzbuzz(45)).toBe('fizzbuzz')
+  })
+  it('shoud return the number itself, if number is not multiple of 3 or 5', () => {
+    expect(fizzbuzz(2)).toBe(2)
   })
 })
