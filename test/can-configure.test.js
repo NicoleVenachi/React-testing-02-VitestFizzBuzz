@@ -5,11 +5,28 @@ const canConfigure = (from, to) => {
   if (typeof from !== 'string') throw new Error('from is not a string')
   if (typeof to !== 'string') throw new Error('to is not a string')
 
-  const isDifferentLength = from.length !== to.length
-  if (isDifferentLength) return false
+  const isSameLength = from.length === to.length
+  if (!isSameLength) return false
 
   const hasSameUniqueLetters = (new Set(from).size === new Set(to).size)
   if (!hasSameUniqueLetters) return false
+
+  // para verificar lo del orden, guardo trasnformaciones en objeto
+  const transformations = []
+  for (let i = 0; i < from.length; i++) {
+    // guardo las letras
+    const fromLetter = from[i]
+    const toLetter = to[i]
+
+    // guardo la letra que tengo guardada en las transforamciones, en esa posicion, para ver si son la misma. Sino hay ninguna, undefined
+    const storedLetter = transformations[fromLetter]
+
+    // si existe la letra, veo si es diferente a la que deseo convertir, si ese es el caso, false
+    if (storedLetter && storedLetter !== toLetter) return false
+
+    // si son iguales, true
+    transformations[fromLetter] = toLetter
+  }
 
   return true
 }
@@ -17,8 +34,8 @@ const canConfigure = (from, to) => {
 /*
 Escrbir una funcion que al pasar un núero:
   - Return false, si los dos inputs recibidos tienen distinta length
-  - Return false, si las letras se repiten en un mismo input (numero de letras unicas, varia en los strings)
-  - Muestre 'fizzbuzz', si es múltiplo de 3 y 5.
+  - Return false, si el numero de letras unicas, varia en los strings (pueden repetirse letras, pero mismo numero de letras unicas en ambos)
+  - Return false, si letras a transformar son diferentes (CREO)
   - Muestre el número, sino es múltiplo de ninguno de los anteriores.
 */
 
@@ -57,5 +74,14 @@ describe('canReconfigure', () => {
   it('should return false if strings provided have different number of unique letters', () => {
     // veo si tira o no algo
     expect(canConfigure('abc', 'ddd')).toBe(false)
+  })
+  it('should return false if strings provided have different length, evem with the same number of unique letters', () => {
+    // veo si tira o no algo
+    expect(canConfigure('aab', 'ab')).toBe(false)
+  })
+
+  it('should return false if strings has different order of transformation', () => {
+    // veo si tira o no algo
+    expect(canConfigure('XBOX', 'XXBO')).toBe(false)
   })
 })
