@@ -36,7 +36,6 @@ Escrbir una funcion que al pasar un núero:
   - Return false, si los dos inputs recibidos tienen distinta length
   - Return false, si el numero de letras unicas, varia en los strings (pueden repetirse letras, pero mismo numero de letras unicas en ambos)
   - Return false, si letras a transformar son diferentes (CREO)
-  - Muestre el número, sino es múltiplo de ninguno de los anteriores.
 */
 
 describe('canReconfigure', () => {
