@@ -1,43 +1,8 @@
 import { describe, it, afterEach, expect } from 'vitest'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { Calculator, operations } from '../src/Calculator'
 
 const numbers = Array(10).fill(1).map((x, idx) => idx)
-
-const rows = [
-  [7, 8, 9],
-  [4, 5, 6],
-  [1, 2, 3],
-  [0]
-]
-
-const operations = ['+', '-', '*', '/']
-
-const Calculator = () => {
-  return (
-    <section>
-      <h1>Calculator</h1>
-
-      <div role='grid'>
-        {
-          rows.map((row, idx) => (
-            <div role='row' key={idx}>
-              {row.map(number => (
-                <span key={number}> {number} </span>)
-              )}
-
-            </div>
-          ))
-
-        }
-        {
-          operations.map(operation => (
-            <span key={operation}>{operation}</span>
-          ))
-        }
-      </div>
-    </section>
-  )
-}
 
 describe('Calculator', () => {
   afterEach(cleanup)
@@ -66,5 +31,71 @@ describe('Calculator', () => {
     operations.forEach(operation => {
       screen.getByText(operation)
     })
+  })
+  it('should render equal sign', () => {
+    render(<Calculator />)
+    screen.getByText('=')
+  })
+
+  it('should render an input', () => {
+    render(<Calculator />)
+    screen.getByRole('textbox') // role de inpu, si hubiera varias, podr'ia usar data ttrubutes, etc
+  })
+
+  it('should show the user input after clicking a number', () => {
+    // simulo comportameinto del usaurio
+    render(<Calculator />)
+    const one = screen.getByText('1')
+    fireEvent.click(one) // traigo input, y lo clickeo
+
+    const input = screen.getByRole('textbox')
+    expect(input.value).toBe('1')
+  })
+  it('should show the user input after clicking several numbers', () => {
+    // simulo comportameinto del usaurio
+    render(<Calculator />)
+    const one = screen.getByText('1')
+    fireEvent.click(one) // traigo input, y lo clickeo
+
+    const two = screen.getByText('2')
+    fireEvent.click(two) // traigo input, y lo clickeo
+
+    const three = screen.getByText('3')
+    fireEvent.click(three) // traigo input, y lo clickeo
+
+    const input = screen.getByRole('textbox')
+    expect(input.value).toBe('123')
+  })
+
+  it('should show the user input after clicking numbers and operations', () => {
+    // simulo comportameinto del usaurio
+    render(<Calculator />)
+    const one = screen.getByText('1')
+    fireEvent.click(one)
+
+    const plus = screen.getByText('+')
+    fireEvent.click(plus)
+
+    fireEvent.click(one)
+
+    const input = screen.getByRole('textbox')
+    expect(input.value).toBe('1+1')
+  })
+  it('should calculate based on user input and show the calculation', () => {
+    // simulo comportameinto del usaurio
+    render(<Calculator />)
+    const one = screen.getByText('1')
+    fireEvent.click(one)
+
+    const plus = screen.getByText('+')
+    fireEvent.click(plus)
+
+    fireEvent.click(one)
+
+    const equalSign = screen.getByText('=')
+    fireEvent.click(equalSign)
+
+    const input = screen.getByRole('textbox')
+    expect(input.value).toBe('2')
   })
 })
